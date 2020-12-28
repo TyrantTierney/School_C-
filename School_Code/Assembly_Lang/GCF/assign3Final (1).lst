@@ -1,0 +1,191 @@
+0001                         **************************************
+0002                         *
+0003                         * Name:Joseph Tierney
+0004                         * ID:18164679
+0005                         * Date:10/3/19
+0006                         * Lab3
+0007                         *
+0008                         * Program description:This program will compare 2 numbers and find the GCF of the 2 numbers
+0009                         * Pseudocode:
+0010                         *#include<stdio.h>
+0011                         *#include<stdlib.h>
+0012                         *int main()
+0013                         *{
+0014                         *                unsigned int num1 = 1;
+0015                         *                unsigned int num2 = 250;
+0016                         *                unsigned int rega = 0;
+0017                         *                unsigned int regb = 0;
+0018                         *                unsigned int divisor = 0;
+0019                         *                unsigned int dividend = 0;
+0020                         *                unsigned int check = 0;
+0021                         *                unsigned int GCF = 0;
+0022                         *                if(num1 < num2)              //Checks to see if number 1 less than number 2 if this is the case num1 will be declared the divisor and num2 the dividend
+0023                         *                {
+0024                         *                                divisor = num1;
+0025                         *                                rega = divisor;
+0026                         *                                dividend = num2;
+0027                         *                                regb = dividend;
+0028                         *                }
+0029                         *                if(num2 < num1) //Checks to see if number 1 less than number 2 if this is the case num1 will be declared the divisor and num2 the dividend
+0030                         *                {
+0031                         *                                divisor = num2;
+0032                         *                                rega = divisor;
+0033                         *                                dividend = num1;
+0034                         *                                regb = dividend;
+0035                         *                }
+0036                         *                if(num1 == num2) //will see if the numbers are the same if they are the GCF will be set as the value in num1
+0037                         *                {
+0038                         *                                GCF = num1;
+0039                         *                }
+0040                         *                GCF = divisor;
+0041                         *                if(num2 == 0)
+0042                         *                {
+0043                         *                        GCF = num1;
+0044                         *                        check = 1;
+0045                         *                }
+0046                         *                if(num1 == 0)
+0047                         *                { 
+0048                         *                       GCF = num2;
+0049                         *                       check = 1;
+0050                         *                }
+0051                         *                GCF++;
+0052                         *                while(check == 0) //will loop till check has been changed
+0053                         *                {
+0054                         *                                rega = divisor;
+0055                         *                                regb = dividend;
+0056                         *                                GCF--;
+0057                         *                                while(GCF <= rega) //will look to see if the value given for the GCF is divisable for the divisor
+0058                         *                                {
+0059                         *                                        rega = rega - GCF;
+0060                         *                                        if(rega == 0) //if the remainder from the first while loop is 0 that means that it was divisable so it will be tested against the dividend
+0061                         *                                        {
+0062                         *                                                        while(GCF <= regb) //diviend is tested against the GCF
+0063                         *                                                        {
+0064                         *                                                                        regb -= GCF;
+0065                         *                                                        }
+0066                         *                                                        if(regb == 0) //will set check to 1 so that it will exit the while loop with the appropriate GCF
+0067                         *                                                        {
+0068                         *                                                                        check = 1;
+0069                         *                                                        }
+0070                         *                                        }
+0071                         *                                }
+0072                         *                }
+0073                         *                return 0;
+0074                         *}
+0075                         *
+0076                         **************************************
+0077                         
+0078                         * start of data section
+0079                         
+0080 b000                    		ORG $B000
+0081 b000 ff                 NUM1		FCB	255
+0082 b001 01                 NUM2		FCB	1
+0083                         
+0084 b010                    		ORG $B010
+0085 b010                    GCD		RMB	1
+0086 b011                    REMAINDER	RMB	1
+0087 b012                    DIVISOR	RMB	1
+0088 b013                    DIVIDEND	RMB	1
+0089 b014                    CHECK		RMB	1
+0090                         * define any other variables that you might need here using RMB (not FCB or FDB)
+0091                         
+0092                         
+0093 c000                    	ORG $C000
+0094                         * start of your program
+0095 c000 7f b0 10           		CLR	GCD
+0096 c003 7f b0 11           		CLR	REMAINDER
+0097 c006 7f b0 12           		CLR	DIVISOR
+0098 c009 7f b0 13           		CLR	DIVIDEND
+0099 c00c 7f b0 14           		CLR	CHECK
+0100 c00f b6 b0 00           		LDAA	NUM1
+0101 c012 f6 b0 01           		LDAB	NUM2
+0102 c015 81 00              		CMPA	#$00
+0103 c017 27 1d              		BEQ	IF2
+0104 c019 c1 00              		CMPB	#$00
+0105 c01b 27 26              		BEQ	IF6
+0106 c01d b1 b0 01           		CMPA	NUM2
+0107 c020 22 04              		BHI	IF
+0108 c022 25 0a              		BLO	IF1
+0109 c024 27 10              		BEQ	IF2
+0110 c026 b7 b0 13           IF		STAA	DIVIDEND	  if(num1 < num2) THIS IF STATEMENT WILL SET THE DIVISOR AND THE DIVIDEND  
+0111 c029 f7 b0 12           		STAB	DIVISOR
+0112 c02c 20 22              		BRA	ENDIF
+0113 c02e b7 b0 12           IF1		STAA	DIVISOR	if(num2 < num1) THIS IS THE IF STATEMENT THAT WILL SET THE DIVISOR AND DIVIEND FOR NUM2 BEING GREATER
+0114 c031 f7 b0 13           		STAB	DIVIDEND
+0115 c034 20 1a              		BRA	ENDIF
+0116 c036 b6 b0 01           IF2		LDAA	NUM2		if(num1 == 0) WILL SET GDF TO NUM1 AND CHECK TO 1
+0117 c039 b7 b0 10           		STAA	GCD
+0118 c03c c6 01              		LDAB	#$01
+0119 c03e f7 b0 14           		STAB	CHECK
+0120 c041 20 54              		BRA	ENDIF2
+0121 c043 f6 b0 00           IF6		LDAB	NUM1		if(num2 == 0) WILL SET GDF TO NUM2 AND CHECK TO 1	
+0122 c046 f7 b0 10           		STAB	GCD
+0123 c049 86 01              		LDAA	#$01
+0124 c04b b7 b0 14           		STAA	CHECK
+0125 c04e 20 47              		BRA	ENDIF6
+0126                         ENDIF
+0127 c050 b6 b0 13           		LDAA	DIVIDEND
+0128 c053 b1 b0 12           IF7		CMPA	DIVISOR	if(num1 == num2) SET CHECK TO ONE AND GCD TO NUM1
+0129 c056 27 03              		BEQ	ENDIF7
+0130 c058 b7 b0 10           		STAA	GCD
+0131                         ENDIF7	
+0132 c05b b6 b0 12           		LDAA	DIVISOR
+0133 c05e b7 b0 10           		STAA	GCD
+0134 c061 7c b0 10           		INC	GCD
+0135 c064 f6 b0 14           WHILE		LDAB	CHECK		while(check == 0) STARTS THE LOOP THAT WILL CHECK TO SEE WHAT GCD THE DIVISOR WILL HAVE THEN SEE IF THE DIVIDEND SHARES THAT VALUE
+0136 c067 c1 01              		CMPB	#$01
+0137 c069 27 2c              		BEQ	ENDWHILE
+0138 c06b b6 b0 12           		LDAA	DIVISOR
+0139 c06e 7a b0 10           		DEC	GCD
+0140 c071 b1 b0 10           WHILE1		CMPA	GCD		while(GCF <= rega) GCF OF THE DIVISOR
+0141 c074 25 05              		BLO	ENDWHILE1
+0142 c076 b0 b0 10           		SUBA	GCD
+0143 c079 20 f6              		BRA	WHILE1
+0144                         ENDWHILE1
+0145 c07b 81 00              IF3		CMPA	#$00		if(rega == 0) SEES IF THE REGISTER WITH THE VALUE OF THE DIVISOR IS AT 0 SIGNIFING A GDC
+0146 c07d 26 16              		BNE	ENDIF3
+0147 c07f b6 b0 13           		LDAA	DIVIDEND
+0148 c082 b1 b0 10           WHILE2		CMPA	GCD		while(GCF <= regb) TESTS THAT GDC AGAINST THE DIVIDEND	
+0149 c085 25 05              		BLO	ENDWHILE2
+0150 c087 b0 b0 10           		SUBA	GCD
+0151 c08a 20 f6              		BRA	WHILE2
+0152                         ENDWHILE2
+0153 c08c 81 00              IF4		CMPA	#$00		 if(regb == 0) CONFIRMS IF IT IS AND THEN SETS CHECK TO 1 SO THE LOOP CAN EXIT
+0154 c08e 26 05              		BNE	ENDIF4
+0155 c090 c6 01              		LDAB	#$01
+0156 c092 f7 b0 14           		STAB	CHECK
+0157                         ENDIF3
+0158                         ENDIF4
+0159 c095 20 cd              		BRA	WHILE
+0160                         ENDWHILE
+0161                         ENDIF6
+0162                         ENDIF2
+0163 c097 20 fe              DONE	BRA	DONE			  return 0; ENDS THE PROGRAM
+
+CHECK      b014
+DIVIDEND   b013
+DIVISOR    b012
+DONE       c097
+ENDIF      c050
+ENDIF2     c097
+ENDIF3     c095
+ENDIF4     c095
+ENDIF6     c097
+ENDIF7     c05b
+ENDWHILE   c097
+ENDWHILE1  c07b
+ENDWHILE2  c08c
+GCD        b010
+IF         c026
+IF1        c02e
+IF2        c036
+IF3        c07b
+IF4        c08c
+IF6        c043
+IF7        c053
+NUM1       b000
+NUM2       b001
+REMAINDER  b011
+WHILE      c064
+WHILE1     c071
+WHILE2     c082

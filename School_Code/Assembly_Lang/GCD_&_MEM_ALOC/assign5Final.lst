@@ -1,0 +1,327 @@
+0001                         **************************************
+0002                         *
+0003                         * Name: Joseph Tierney
+0004                         * ID: 18164679
+0005                         * Date: 11/4/19
+0006                         * Lab5
+0007                         *
+0008                         * Program description:This program will pass values of the given table to the stack and allocate memory in the stack, it will then load the stack pointer to X and utilize the stack to store and access variables,
+0009                         * with these variable it will find the GCD of the values from the table, until it has reached a point on the table where both values are $FF
+0010                         * 
+0011                         *
+0012                         * Pseudocode of Main Program:
+0013                         *#include<stdio.h>
+0014                         *#include<stdlib.h>
+0015                         *int GCD(int A,int B);
+0016                         *int main()
+0017                         *{	
+0018                         *	int table1[] = {222,37,16,55,55,1,3,22,255};	
+0019                         *	int table2[] = {37,222,240,5,55,15,22,3,255};
+0020                         *	int result[8];
+0021                         *	int* ptrx;
+0022                         *	int* ptry;
+0023                         *	ptrx = table1;
+0024                         *	ptry = table2;
+0025                         *	int counter = 0;
+0026                         *	while(*ptrx != 255)		//makes a pointer so that I can navigate the array
+0027                         *	{
+0028                         *		while(*ptry != 255)		//makes a pointer that can navigate the 2nd array to the other table
+0029                         *		{
+0030                         *			result[counter] = GCD(*ptrx,*ptry);
+0031                         *			ptry++;
+0032                         *			ptrx++;
+0033                         *			counter++;
+0034                         *		}
+0035                         *	}
+0036                         *	counter = 0;
+0037                         *	while(counter <= 8)			//prints my results
+0038                         *	{
+0039                         *		printf("%d result\n", result[counter]);
+0040                         *		counter++;
+0041                         *	}  
+0042                         *	return 0;
+0043                         *}
+0044                         *
+0045                         *---------------------------------------
+0046                         *
+0047                         * Pseudocode Subroutine
+0048                         *int GCD(int A,int B)
+0049                         *{
+0050                         *	printf("A: %d,B: %d\n",A,B);
+0051                         *	int divisor = 0;
+0052                         *	int dividend = 0;
+0053                         *	int tempend = 0;
+0054                         *	int tempdiv = 0;
+0055                         *	int check = 0;
+0056                         *	int GCD = 0;
+0057                         *	if(A > B)			//declares the dividend and the divisor or the function for A being greater than B
+0058                         *	{
+0059                         *		divisor = B;
+0060                         *		tempdiv = B;
+0061                         *		dividend = A;
+0062                         *		tempend = A;
+0063                         *	}
+0064                         *	if(A < B)			//declares the dividend and the divisor or the function for A being greater than B
+0065                         *	{
+0066                         *		divisor = A;
+0067                         *		tempdiv = A;
+0068                         *		dividend = B;
+0069                         *		tempend = B;
+0070                         *	}
+0071                         *	if(A == 0)			//declares the GCD as B if A is 0
+0072                         *	{
+0073                         *		GCD = B;
+0074                         *		check = 1;
+0075                         *	}
+0076                         *	if(B == 0)			//declares the GCD as A if B is 0
+0077                         *	{
+0078                         *		GCD = A;
+0079                         *		check = 1;
+0080                         *	}
+0081                         *	if(A == B)			//sets the GCD as A if A and B are equal
+0082                         *	{
+0083                         *//		printf("A2: %d\n",A);
+0084                         *		check = A;
+0085                         *	}
+0086                         *	GCD = divisor;
+0087                         *	GCD++;
+0088                         *	while(check == 0)		//iterates the GCD through the loop dividing it by itself will be tested against the dividend
+0089                         *	{
+0090                         *		tempdiv = divisor;
+0091                         *		tempend = dividend;
+0092                         *		GCD--;
+0093                         *//		printf("GCD:%d\t tempend:%d\n",GCD,tempend);
+0094                         *//		printf("GCD:%d\t tempdiv:%d\n",GCD,tempdiv);
+0095                         *		while(GCD <= tempdiv)
+0096                         *		{	
+0097                         *//			printf("GCD:%d\t tempdiv:%d\n",GCD,tempdiv);
+0098                         *			tempdiv = (tempdiv - GCD);
+0099                         *			if(tempdiv == 0)
+0100                         *			{
+0101                         *				while(GCD <= tempend)
+0102                         *				{
+0103                         *//					printf("GCD:%d\t tempendF:%d\n",GCD,tempend);
+0104                         *					tempend = (tempend - GCD);
+0105                         *//					printf("GCD:%d\t tempendF:%d\n",GCD,tempend);
+0106                         *				}
+0107                         *				if(tempend == 0)
+0108                         *				{
+0109                         *					check = 1;
+0110                         *				} 
+0111                         *			}
+0112                         *		}	
+0113                         *	}
+0114                         *	GCD = check;
+0115                         *	printf("GCD: %d\n",GCD );
+0116                         *	return GCD;
+0117                         *}
+0118                         *
+0119                         ***************************************
+0120                         * start of data section
+0121                         
+0122 b000                    	ORG $B000
+0123 b000 de 25 10 37 37 01  TABLE1	FCB	222,  37, 16,  55,  55,  1,   3, 22, $FF
+     03 16 ff
+0124 b009 25 de f0 05 37 0f  TABLE2	FCB	37,  222, 240,  5, 55, 15,  22,  3, $FF
+     16 03 ff
+0125                         
+0126 b020                    	ORG $B020
+0127 b020                    RESULT	RMB	8
+0128 b028                    ADDRESSR	RMB	2
+0129                         
+0130                         * define any other variables that you might need here 
+0131                         * remember that your subroutine must not access any of these variables,
+0132                         * including TABLE1, TABLE2, and RESULT
+0133                         ********************************
+0134                         * initalizing the pointers and making room in the stack for the stack variables in the sub routine
+0135                         ********************************
+0136 c000                    	ORG $C000
+0137 c000 8e 01 ff           	LDS	#$01FF		initialize stack pointer
+0138 c003 ce b0 00           	LDX	#TABLE1
+0139 c006 18 ce b0 09        	LDY	#TABLE2
+0140 c00a 18 3c              	PSHY
+0141 c00c 18 ce b0 20        	LDY	#RESULT	
+0142 c010 18 ff b0 28        	STY	ADDRESSR	gives addressr the value of RESULTS address
+0143 c014 18 38              	PULY
+0144 c016 34                 	DES			TEMP variable on stack
+0145 c017 34                 	DES			DIVIDEND variable on stack
+0146 c018 34                 	DES			DIVISOR variable on stack
+0147 c019 34                 	DES			CHECK	variable on stack
+0148 c01a 34                 	DES			GCF variable on stack
+0149                         *********************************
+0150                         * the loop that will go until both the value in TABLE1 and TABLE2 are the same
+0151                         *********************************
+0152 c01b a6 00              WHILE	LDAA	0,X		while(*ptry != 255)
+0153 c01d 18 e6 00           	LDAB	0,Y
+0154 c020 81 ff              IFFF	CMPA	#$FF
+0155 c022 26 06              	BNE	ENDIFFF
+0156 c024 c1 ff              	CMPB	#$FF
+0157 c026 26 02              	BNE	ENDIFFF
+0158 c028 20 21              	BRA	ENDWHILE
+0159                         ENDIFFF
+0160                         ***********************************
+0161                         * pushes the values from both tables to the stack throught the a register
+0162                         ***********************************
+0163 c02a 36                 	PSHA			sending the A value to the stack
+0164 c02b 37                 	PSHB			sending the B value to the stack
+0165 c02c 3c                 	PSHX			sending the address of the X register to the stack
+0166 c02d bd d0 00           	JSR	SUB		result[counter] = GCD(*ptrx,*ptry);
+0167 c030 38                 	PULX			getting the address of the X register back
+0168 c031 32                 	PULA			
+0169 c032 32                 	PULA
+0170 c033 32                 	PULA			getting the value for GCD from the stack
+0171 c034 34                 	DES
+0172 c035 18 3c              	PSHY			stores the Y address on the stack
+0173 c037 18 fe b0 28        	LDY	ADDRESSR	Y points to the address of return
+0174 c03b 18 a7 00           	STAA	0,Y		result[counter] = GCD(*ptrx,*ptry);
+0175 c03e 18 08              	INY			
+0176 c040 18 ff b0 28        	STY	ADDRESSR	
+0177 c044 18 38              	PULY			Y address is pulled from the stack returnin it to its normal value
+0178 c046 08                 	INX			ptrx++;
+0179 c047 18 08              	INY			ptry++;
+0180 c049 20 d0              	BRA	WHILE
+0181                         ENDWHILE
+0182                         **********************************
+0183                         *Remove the gaps that you have made for the stack so the memory is freed
+0184                         **********************************
+0185 c04b 31                 	INS			returns the stack to its original location
+0186 c04c 31                 	INS
+0187 c04d 31                 	INS
+0188 c04e 31                 	INS
+0189 c04f 31                 	INS
+0190 c050 20 fe              DONE	BRA	DONE		return 0;
+0191                         * start of your program
+0192                         
+0193                         
+0194                         
+0195                         * NOTE: NO STATIC VARIABLES ALLOWED IN SUBROUTINE
+0196                         
+0197                         
+0198 d000                    		ORG $D000
+0199                         * start of your subroutine
+0200                         *************************************
+0201                         * Declaration and setting of variables in the subroutine in respect to X
+0202                         ************************************* 
+0203 d000 30                 SUB		TSX			the X register points to the SP location and SP is decremented 1
+0204 d001 86 00              		LDAA	#$00
+0205 d003 a7 06              		STAA	6,X		sets all values in the stack that haven't been used but space has been allocated to them to 0
+0206 d005 a7 07              		STAA	7,X
+0207 d007 a7 08              		STAA	8,X
+0208 d009 a7 09              		STAA	9,X
+0209 d00b a7 0a              		STAA	10,X
+0210                         *************************************
+0211                         * sets variables to positions in the stack that I have declared,DIVISOR and DIVIDEND
+0212                         *************************************
+0213 d00d a6 04              		LDAA	4,X
+0214 d00f a1 05              		CMPA	5,X		
+0215 d011 27 04              		BEQ	IFE
+0216 d013 22 0a              		BHI	IFH
+0217 d015 25 10              		BLO	IFL
+0218 d017 a7 06              IFE		STAA	6,X			if(A == B) GCD is set to the value for TABLE1
+0219 d019 c6 01              		LDAB	#$01
+0220 d01b e7 0a              		STAB	10,X			CHECK is set to 1
+0221 d01d 20 10              		BRA	ENDIFE
+0222 d01f a7 09              IFH		STAA	9,X			if(A > B) DIVIDEND is set to TABLE1 value
+0223 d021 e6 05              		LDAB	5,X		
+0224 d023 e7 08              		STAB	8,X			DIVISOR is set to TABLE2 value
+0225 d025 20 08              		BRA	ENDIFH
+0226 d027 a7 08              IFL		STAA	8,X			if(A < B) DIVISOR is set to TABLE1 value
+0227 d029 e6 05              		LDAB	5,X
+0228 d02b e7 09              		STAB	9,X			DIVIDEND is set to TABLE2 value
+0229 d02d 20 00              		BRA	ENDIFL
+0230                         ENDIFE
+0231                         ENDIFH
+0232                         ENDIFL
+0233                         ***************************************
+0234                         * checking for 0 then setting GCD to $FF if the value in ethier table is 0
+0235                         ***************************************
+0236 d02f a6 04              IFZ1		LDAA	4,X			if(A == 0)
+0237 d031 81 00              		CMPA	#$00
+0238 d033 26 08              		BNE	ENDIFZ1
+0239 d035 c6 ff              		LDAB	#$FF
+0240 d037 e7 06              		STAB	6,X			GCD is set to $FF
+0241 d039 c6 01              		LDAB	#$01
+0242 d03b e7 0a              		STAB	10,X			CHECK is set to 1
+0243                         ENDIFZ1
+0244 d03d a6 05              IFZ2		LDAA	5,X			if(B == 0)
+0245 d03f 81 00              		CMPA	#$00
+0246 d041 26 08              		BNE	ENDIFZ2
+0247 d043 c6 ff              		LDAB	#$FF			GCD is set to $FF
+0248 d045 e7 06              		STAB	6,X
+0249 d047 c6 01              		LDAB	#$01			CHECK is set to 1
+0250 d049 e7 0a              		STAB	10,X
+0251                         ENDIFZ2
+0252                         ***************************************
+0253                         * finding the GCF using the variables set in the stack
+0254                         ***************************************
+0255 d04b a6 0a              IFW		LDAA	10,X
+0256 d04d 81 01              		CMPA	#$01
+0257 d04f 27 04              		BEQ	ENDIFW
+0258 d051 a6 08              		LDAA	8,X
+0259 d053 a7 07              		STAA	7,X
+0260                         ENDIFW	
+0261 d055 a6 0a              WHILESUB	LDAA	10,X			while(check == 0)
+0262 d057 81 01              		CMPA	#$01
+0263 d059 27 2c              		BEQ	ENDWHILESUB
+0264 d05b a6 08              		LDAA	8,X
+0265 d05d a1 07              WHILEDIV	CMPA	7,X			while(GCD <= tempdiv)
+0266 d05f 25 04              		BLO	ENDWHILEDIV
+0267 d061 a0 07              		SUBA	7,X
+0268 d063 20 f8              		BRA	WHILEDIV
+0269                         ENDWHILEDIV
+0270 d065 81 00              IF1		CMPA	#$00			if(tempdiv == 0)
+0271 d067 26 1a              		BNE	ENDIF1
+0272 d069 a6 07              		LDAA	7,X
+0273 d06b a7 06              		STAA	6,X
+0274 d06d a6 09              		LDAA	9,X
+0275 d06f a1 07              WHILEEND	CMPA	7,X			while(GCD <= tempend)
+0276 d071 25 04              		BLO	ENDWHILEEND
+0277 d073 a0 07              		SUBA	7,X
+0278 d075 20 f8              		BRA	WHILEEND
+0279                         ENDWHILEEND
+0280 d077 81 00              IF2		CMPA	#$00			if(tempend == 0)
+0281 d079 26 08              		BNE	ENDIF2
+0282 d07b a6 07              		LDAA	7,X
+0283 d07d a7 06              		STAA	6,X
+0284 d07f 86 01              		LDAA	#$01
+0285 d081 a7 0a              		STAA	10,X			check = 1;
+0286                         ENDIF1
+0287                         ENDIF2
+0288 d083 6a 07              		DEC	7,X			GCD--;
+0289 d085 20 ce              		BRA	WHILESUB
+0290                         ENDWHILESUB
+0291 d087 35                 		TXS				The stack is pointing to its location it was before TSX
+0292 d088 39                 		RTS				return GCD;
+
+ADDRESSR   b028
+DONE       c050
+ENDIF1     d083
+ENDIF2     d083
+ENDIFE     d02f
+ENDIFFF    c02a
+ENDIFH     d02f
+ENDIFL     d02f
+ENDIFW     d055
+ENDIFZ1    d03d
+ENDIFZ2    d04b
+ENDWHILE   c04b
+ENDWHILEDIV d065
+ENDWHILEEND d077
+ENDWHILESUB d087
+IF1        d065
+IF2        d077
+IFE        d017
+IFFF       c020
+IFH        d01f
+IFL        d027
+IFW        d04b
+IFZ1       d02f
+IFZ2       d03d
+RESULT     b020
+SUB        d000
+TABLE1     b000
+TABLE2     b009
+WHILE      c01b
+WHILEDIV   d05d
+WHILEEND   d06f
+WHILESUB   d055
